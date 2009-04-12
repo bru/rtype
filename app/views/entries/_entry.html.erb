@@ -1,0 +1,18 @@
+<h3><%= link_to entry.title, entry.permalink %></h3>
+<div class="entry-meta">by <%= entry.author.nickname %> 
+	<abbr title="<%= entry.authored_on %>"><%= 	time_ago_in_words(entry.authored_on) %> ago</abbr> 
+	<% if entry.categories.size > 0 %>
+	in
+		<%= entry.categories.map{ |c| link_to(c.label.downcase, c.archive_url) }.join(", ") %> 
+	<% end %>
+	<% if entry.tags.size > 0 %>
+	and tagged as 
+		<%= entry.tags.map{ |t| link_to(t.name.downcase, tag_search_path( t.name)) }.join(", ") %>
+	<% end %>
+	<% if entry.comments.size > 0 %>
+	- <%= entry.comments.size %> comments so far
+	<% end %>
+</div>
+<div class="entry-content">
+	<%= entry.text %>
+</div>

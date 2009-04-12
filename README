@@ -1,0 +1,20 @@
+== Welcome to RType
+
+Rtype is a Ruby on Rails application that acts as a smart renderer for Movable Type blogs.
+It sits on top of MT database, maps it to ActiveRecord and uses implements Rails conventions to bless MT with a proper MVC stack and improved performance.
+
+=== Usage
+
+Keep on using MT's interface for the backend. Let Rtype do the rest.
+
+=== Features
+
+* Automatic routing
+* UltraSphinx powered search
+* Fast, low "cost" comments
+* Lightweight session management
+
+=== TODO
+
+* Full integration with backend (templates, settings)
+* User profiles

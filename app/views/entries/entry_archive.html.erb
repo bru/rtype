@@ -1,0 +1,29 @@
+<h2><%= @entry.title %></h2>
+<div class="entry-meta">by <%= @entry.author.nickname %> 
+	<abbr title="<%= @entry.authored_on %>"><%= 	time_ago_in_words(@entry.authored_on) %> ago</abbr> 
+	<% if @entry.categories.size > 0 %>
+	in
+		<%= @entry.categories.map{ |c| link_to(c.label.downcase, c.archive_url) }.join(", ") %> 
+	<% end %>
+	<% if @entry.tags.size > 0 %>
+	and tagged as 
+		<%= @entry.tags.map{ |t| link_to(t.name.downcase, tag_search_path( t.name)) }.join(", ") %>
+	<% end %>
+</div>
+<div class="entry-content">
+	<%= @entry.text %>
+</div>
+
+<h3>Comments</h3>
+<%= render :partial => "comment", :collection => @entry.comments %>
+
+<h3>Have your say</h3>
+<% form_for(Comment.new) do |c| %>
+  <%= c.hidden_field :comment_blog_id, :value => @entry.blog_id %>
+  <%= c.hidden_field :comment_entry_id, :value => @entry.id %>
+  <div class="textinput"><label>Name:</label> <%= c.text_field :comment_author %></div>
+  <div class="textinput"><label>Email:</label> <%= c.text_field :comment_email %></div>
+  <div class="textinput"><label>URL:</label> <%= c.text_field :comment_url %></div>
+  <div class="textinput"><label>Comment:</label> <%= c.text_area :comment_text %></div>
+  <%= submit_tag "create" %>
+<% end %>

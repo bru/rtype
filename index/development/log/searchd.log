@@ -1,0 +1,28 @@
+[Sat Mar 14 12:43:53.348 2009] [10056] creating server socket on 0.0.0.0:3313
+[Sat Mar 14 12:43:53.348 2009] [10056] accepting connections
+[Sat Mar 14 13:19:42.621 2009] [10056] rotating indices (seamless=1)
+[Sat Mar 14 13:19:42.628 2009] [10056] rotating index 'main': success
+[Sat Mar 14 13:19:42.628 2009] [10056] rotating finished
+[Sat Mar 14 13:19:46.721 2009] [10056] caught SIGTERM, shutting down
+[Sat Mar 14 13:19:46.721 2009] [10056] shutdown complete
+[Sat Mar 14 13:19:50.741 2009] [10430] creating server socket on 0.0.0.0:3313
+[Sat Mar 14 13:19:50.741 2009] [10430] accepting connections
+[Sun Mar 15 00:39:18.392 2009] [10430] caught SIGTERM, shutting down
+[Sun Mar 15 00:39:18.414 2009] [10430] shutdown complete
+[Thu Mar 26 14:58:10.318 2009] [21757] creating server socket on 0.0.0.0:3313
+[Thu Mar 26 14:58:10.334 2009] [21757] accepting connections
+[Thu Mar 26 15:11:06.342 2009] [21757] caught SIGTERM, shutting down
+[Thu Mar 26 15:11:06.344 2009] [21757] shutdown complete
+[Thu Mar 26 15:11:10.365 2009] [22095] creating server socket on 0.0.0.0:3313
+[Thu Mar 26 15:11:10.365 2009] [22095] accepting connections
+[Thu Mar 26 15:13:20.288 2009] [22124] creating server socket on 0.0.0.0:3313
+[Thu Mar 26 15:13:20.288 2009] [22124] accepting connections
+[Thu Mar 26 15:27:06.983 2009] [22124] rotating indices (seamless=1)
+[Thu Mar 26 15:27:07.214 2009] [22124] rotating index 'main': success
+[Thu Mar 26 15:27:07.214 2009] [22124] rotating finished
+[Thu Mar 26 15:27:17.677 2009] [22124] caught SIGTERM, shutting down
+[Thu Mar 26 15:27:17.678 2009] [22124] shutdown complete
+[Thu Mar 26 15:27:26.670 2009] [22195] creating server socket on 0.0.0.0:3313
+[Thu Mar 26 15:27:26.670 2009] [22195] accepting connections
+[Thu Mar 26 16:27:20.873 2009] [22195] caught SIGTERM, shutting down
+[Thu Mar 26 16:27:20.909 2009] [22195] shutdown complete
