@@ -2,3 +2,4 @@ config/database.yml
 tmp/**/*
 tmp
 *.swp
+*.log

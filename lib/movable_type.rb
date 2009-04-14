@@ -3,6 +3,7 @@ module MovableType
   def self.included(recipient)
     recipient.extend(ModelClassMethods)
     recipient.class_eval do
+      set_table_name 'mt_' + self.to_s.downcase
       set_primary_key self.to_s.downcase + "_id" 
       self.column_names.each do |attrib|
         new_attrib = attrib.sub(self.to_s.downcase + "_", "")
