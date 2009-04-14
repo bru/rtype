@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
              :activation_code => nil
   map.resource :session
   map.resources :authors, :member => { :suspend => :put, :unsuspend => :put, :purge => :delete }
-  # map.resources :comments
+  map.resources :comments
   map.resources :tags
 
   map.search '/search', :controller => 'entries', :action => "search"
