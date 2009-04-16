@@ -7,7 +7,7 @@ include AuthenticatedSystem
 def action_name() end
 
 describe SessionsController do
-  fixtures :authors
+  fixtures :author
   
   before do
     # FIXME -- sessions controller not testing xml logins 

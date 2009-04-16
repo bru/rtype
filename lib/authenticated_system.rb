@@ -14,7 +14,7 @@ module AuthenticatedSystem
 
     # Store the given author id in the session.
     def current_author=(new_author)
-      session[:author_id] = new_author ? new_author.id : nilly
+      session[:author_id] = new_author ? new_author.id : nil
       @current_author = new_author || false
     end
 
@@ -105,8 +105,7 @@ module AuthenticatedSystem
 
     # Called from #current_author.  First attempt to login by the author id stored in the session.
     def login_from_session
-      self.current_author = Author.find_by_author_id(session[:author_id]) if session[:author_id]
-      #self.current_author = Author.find_by_id(session[:author_id]) if session[:author_id]
+      self.current_author = Author.find_by_id(session[:author_id]) if session[:author_id]
     end
 
     # Called from #current_author.  Now, attempt to login by basic authentication information.

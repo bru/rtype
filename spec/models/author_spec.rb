@@ -6,7 +6,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 include AuthenticatedTestHelper
 
 describe Author do
-  fixtures :authors
+  fixtures :author
 
   describe 'being created' do
     before do
@@ -19,18 +19,6 @@ describe Author do
 
     it 'increments Author#count' do
       @creating_author.should change(Author, :count).by(1)
-    end
-
-    it 'initializes #activation_code' do
-      @creating_author.call
-      @author.reload
-      @author.activation_code.should_not be_nil
-    end
-
-    it 'starts in pending state' do
-      @creating_author.call
-      @author.reload
-      @author.should be_pending
     end
   end
 
@@ -146,13 +134,13 @@ describe Author do
   end
 
   it 'resets password' do
-    authors(:quentin).update_attributes(:password => 'new password', :password_confirmation => 'new password')
-    Author.authenticate('quentin', 'new password').should == authors(:quentin)
+    author(:quentin).update_attributes(:password => 'new password', :password_confirmation => 'new password')
+    Author.authenticate('quentin', 'new password').should == author(:quentin)
   end
 
   it 'does not rehash password' do
-    authors(:quentin).update_attributes(:login => 'quentin2')
-    Author.authenticate('quentin2', 'monkey').should == authors(:quentin)
+    author(:quentin).update_attributes(:login => 'quentin2')
+    Author.authenticate('quentin2', 'monkey').should == author(:quentin)
   end
 
   #
@@ -160,7 +148,7 @@ describe Author do
   #
 
   it 'authenticates author' do
-    Author.authenticate('quentin', 'monkey').should == authors(:quentin)
+    Author.authenticate('quentin', 'monkey').should == author(:quentin)
   end
 
   it "doesn't authenticate author with bad password" do
@@ -170,7 +158,7 @@ describe Author do
  if REST_AUTH_SITE_KEY.blank?
    # old-school passwords
    it "authenticates a user against a hard-coded old-style password" do
-     Author.authenticate('old_password_holder', 'test').should == authors(:old_password_holder)
+     Author.authenticate('old_password_holder', 'test').should == author(:old_password_holder)
    end
  else
    it "doesn't authenticate a user against a hard-coded old-style password" do
@@ -192,99 +180,48 @@ describe Author do
   #
 
   it 'sets remember token' do
-    authors(:quentin).remember_me
-    authors(:quentin).remember_token.should_not be_nil
-    authors(:quentin).remember_token_expires_at.should_not be_nil
+    author(:quentin).remember_me
+    author(:quentin).remember_token.should_not be_nil
+    author(:quentin).remember_token_expires_at.should_not be_nil
   end
 
   it 'unsets remember token' do
-    authors(:quentin).remember_me
-    authors(:quentin).remember_token.should_not be_nil
-    authors(:quentin).forget_me
-    authors(:quentin).remember_token.should be_nil
+    author(:quentin).remember_me
+    author(:quentin).remember_token.should_not be_nil
+    author(:quentin).forget_me
+    author(:quentin).remember_token.should be_nil
   end
 
   it 'remembers me for one week' do
     before = 1.week.from_now.utc
-    authors(:quentin).remember_me_for 1.week
+    author(:quentin).remember_me_for 1.week
     after = 1.week.from_now.utc
-    authors(:quentin).remember_token.should_not be_nil
-    authors(:quentin).remember_token_expires_at.should_not be_nil
-    authors(:quentin).remember_token_expires_at.between?(before, after).should be_true
+    author(:quentin).remember_token.should_not be_nil
+    author(:quentin).remember_token_expires_at.should_not be_nil
+    author(:quentin).remember_token_expires_at.between?(before, after).should be_true
   end
 
   it 'remembers me until one week' do
     time = 1.week.from_now.utc
-    authors(:quentin).remember_me_until time
-    authors(:quentin).remember_token.should_not be_nil
-    authors(:quentin).remember_token_expires_at.should_not be_nil
-    authors(:quentin).remember_token_expires_at.should == time
+    author(:quentin).remember_me_until time
+    author(:quentin).remember_token.should_not be_nil
+    author(:quentin).remember_token_expires_at.should_not be_nil
+    author(:quentin).remember_token_expires_at.should == time
   end
 
   it 'remembers me default two weeks' do
     before = 2.weeks.from_now.utc
-    authors(:quentin).remember_me
+    author(:quentin).remember_me
     after = 2.weeks.from_now.utc
-    authors(:quentin).remember_token.should_not be_nil
-    authors(:quentin).remember_token_expires_at.should_not be_nil
-    authors(:quentin).remember_token_expires_at.between?(before, after).should be_true
-  end
-
-  it 'registers passive author' do
-    author = create_author(:password => nil, :password_confirmation => nil)
-    author.should be_passive
-    author.update_attributes(:password => 'new password', :password_confirmation => 'new password')
-    author.register!
-    author.should be_pending
-  end
-
-  it 'suspends author' do
-    authors(:quentin).suspend!
-    authors(:quentin).should be_suspended
-  end
-
-  it 'does not authenticate suspended author' do
-    authors(:quentin).suspend!
-    Author.authenticate('quentin', 'monkey').should_not == authors(:quentin)
-  end
-
-  it 'deletes author' do
-    authors(:quentin).deleted_at.should be_nil
-    authors(:quentin).delete!
-    authors(:quentin).deleted_at.should_not be_nil
-    authors(:quentin).should be_deleted
-  end
-
-  describe "being unsuspended" do
-    fixtures :authors
-
-    before do
-      @author = authors(:quentin)
-      @author.suspend!
-    end
-
-    it 'reverts to active state' do
-      @author.unsuspend!
-      @author.should be_active
-    end
-
-    it 'reverts to passive state if activation_code and activated_at are nil' do
-      Author.update_all :activation_code => nil, :activated_at => nil
-      @author.reload.unsuspend!
-      @author.should be_passive
-    end
-
-    it 'reverts to pending state if activation_code is set and activated_at is nil' do
-      Author.update_all :activation_code => 'foo-bar', :activated_at => nil
-      @author.reload.unsuspend!
-      @author.should be_pending
-    end
+    author(:quentin).remember_token.should_not be_nil
+    author(:quentin).remember_token_expires_at.should_not be_nil
+    author(:quentin).remember_token_expires_at.between?(before, after).should be_true
   end
 
 protected
   def create_author(options = {})
     record = Author.new({ :login => 'quire', :email => 'quire@example.com', :password => 'quire69', :password_confirmation => 'quire69' }.merge(options))
-    record.register! if record.valid?
+    record.save
     record
   end
 end

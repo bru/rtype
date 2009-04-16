@@ -1,7 +1,11 @@
 class EntriesController < ApplicationController
   
-  before_filter :find_blog
+  before_filter :find_blog, :except => [ :home ]
   before_filter :store_location
+  
+  def home
+  end
+  
   # this is blog index
   def index
     @entries = Entry.published.paginate(:page => params[:page], :include => [ :author, :blog, :comments, :tags, :categories ], :conditions => { :entry_blog_id => @blog.id }, :order => "entry_authored_on DESC", :per_page => 10)

@@ -10,26 +10,26 @@ Given "an anonymous user" do
 end
 
 Given "$an $user_type user with $attributes" do |_, user_type, attributes|
-  create_author! user_type, attributes.to_hash_from_story
+  create_user! user_type, attributes.to_hash_from_story
 end
 
 Given "(an?) $user_type user named '$login'" do |_, user_type, login|
-  create_author! user_type, named_author(login)
+  create_user! user_type, named_user(login)
 end
 
 Given "$an $user_type user logged in as '$login'" do |_, user_type, login|
-  create_author! user_type, named_author(login)
-  log_in_author!
+  create_user! user_type, named_user(login)
+  log_in_user!
 end
 
 Given "$actor is logged in" do |_, login|
-  log_in_author! @author_params || named_author(login)
+  log_in_user! @user_params || named_user(login)
 end
 
 Given "there is no $user_type user named '$login'" do |_, login|
-  @author = Author.find_by_login(login)
-  @author.destroy! if @author
-  @author.should be_nil
+  @user = User.find_by_login(login)
+  @user.destroy! if @user
+  @user.should be_nil
 end
 
 #
@@ -40,18 +40,18 @@ When "$actor logs out" do
 end
 
 When "$actor registers an account as the preloaded '$login'" do |_, login|
-  user = named_author(login)
+  user = named_user(login)
   user['password_confirmation'] = user['password']
-  create_author user
+  create_user user
 end
 
 When "$actor registers an account with $attributes" do |_, attributes|
-  create_author attributes.to_hash_from_story
+  create_user attributes.to_hash_from_story
 end
 
 
 When "$actor logs in with $attributes" do |_, attributes|
-  log_in_author attributes.to_hash_from_story
+  log_in_user attributes.to_hash_from_story
 end
 
 #
@@ -67,17 +67,17 @@ end
 
 Then "$login should be logged in" do |login|
   controller.logged_in?.should be_true
-  controller.current_author.should === @author
-  controller.current_author.login.should == login
+  controller.current_user.should === @user
+  controller.current_user.login.should == login
 end
 
-def named_author login
-  author_params = {
+def named_user login
+  user_params = {
     'admin'   => {'id' => 1, 'login' => 'addie', 'password' => '1234addie', 'email' => 'admin@example.com',       },
     'oona'    => {          'login' => 'oona',   'password' => '1234oona',  'email' => 'unactivated@example.com'},
     'reggie'  => {          'login' => 'reggie', 'password' => 'monkey',    'email' => 'registered@example.com' },
     }
-  author_params[login.downcase]
+  user_params[login.downcase]
 end
 
 #
@@ -90,7 +90,7 @@ end
 #
 
 def log_out
-  get '/sessions/destroy'
+  get '/logout'
 end
 
 def log_out!
@@ -99,15 +99,15 @@ def log_out!
   follow_redirect!
 end
 
-def create_author(user_params={})
-  @author_params       ||= user_params
-  post "/authors", :user => user_params
-  @author = Author.find_by_login(user_params['login'])
+def create_user(user_params={})
+  @user_params       ||= user_params
+  post "/users", :user => user_params
+  @user = User.find_by_login(user_params['login'])
 end
 
-def create_author!(user_type, user_params)
+def create_user!(user_type, user_params)
   user_params['password_confirmation'] ||= user_params['password'] ||= user_params['password']
-  create_author user_params
+  create_user user_params
   response.should redirect_to('/')
   follow_redirect!
 
@@ -115,16 +115,16 @@ end
 
 
 
-def log_in_author user_params=nil
-  @author_params ||= user_params
-  user_params  ||= @author_params
+def log_in_user user_params=nil
+  @user_params ||= user_params
+  user_params  ||= @user_params
   post "/session", user_params
-  @author = Author.find_by_login(user_params['login'])
-  controller.current_author
+  @user = User.find_by_login(user_params['login'])
+  controller.current_user
 end
 
-def log_in_author! *args
-  log_in_author *args
+def log_in_user! *args
+  log_in_user *args
   response.should redirect_to('/')
   follow_redirect!
   response.should have_flash("notice", /Logged in successfully/)

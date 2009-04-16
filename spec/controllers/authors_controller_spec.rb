@@ -5,7 +5,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 include AuthenticatedTestHelper
 
 describe AuthorsController do
-  fixtures :authors
+  fixtures :author
 
   it 'allows signup' do
     lambda do
@@ -15,17 +15,8 @@ describe AuthorsController do
   end
 
   
-  it 'signs up user in pending state' do
-    create_author
-    assigns(:author).reload
-    assigns(:author).should be_pending
-  end
 
-  it 'signs up user with activation code' do
-    create_author
-    assigns(:author).reload
-    assigns(:author).activation_code.should_not be_nil
-  end
+
   it 'requires login on signup' do
     lambda do
       create_author(:login => nil)
@@ -59,32 +50,6 @@ describe AuthorsController do
   end
   
   
-  it 'activates user' do
-    Author.authenticate('aaron', 'monkey').should be_nil
-    get :activate, :activation_code => authors(:aaron).activation_code
-    response.should redirect_to('/login')
-    flash[:notice].should_not be_nil
-    flash[:error ].should     be_nil
-    Author.authenticate('aaron', 'monkey').should == authors(:aaron)
-  end
-  
-  it 'does not activate user without key' do
-    get :activate
-    flash[:notice].should     be_nil
-    flash[:error ].should_not be_nil
-  end
-  
-  it 'does not activate user with blank key' do
-    get :activate, :activation_code => ''
-    flash[:notice].should     be_nil
-    flash[:error ].should_not be_nil
-  end
-  
-  it 'does not activate user with bogus key' do
-    get :activate, :activation_code => 'i_haxxor_joo'
-    flash[:notice].should     be_nil
-    flash[:error ].should_not be_nil
-  end
   
   def create_author(options = {})
     post :create, :author => { :login => 'quire', :email => 'quire@example.com',
@@ -170,10 +135,10 @@ describe AuthorsController do
       get :new
     end
     
-    it "should route authors_path() to /authors" do
-      authors_path().should == "/authors"
-      formatted_authors_path(:format => 'xml').should == "/authors.xml"
-      formatted_authors_path(:format => 'json').should == "/authors.json"
+    it "should route author_path() to /authors" do
+      author_path().should == "/authors"
+      formatted_author_path(:format => 'xml').should == "/authors.xml"
+      formatted_author_path(:format => 'json').should == "/authors.json"
     end
     
     it "should route new_author_path() to /authors/new" do

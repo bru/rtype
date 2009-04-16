@@ -1,11 +1,11 @@
 module AuthenticatedTestHelper
   # Sets the current author in the session from the author fixtures.
   def login_as(author)
-    @request.session[:author_id] = author ? (author.is_a?(Author) ? author.id : authors(author).id) : nil
+    @request.session[:author_id] = author ? (author.is_a?(Author) ? author.id : author(author).id) : nil
   end
 
   def authorize_as(author)
-    @request.env["HTTP_AUTHORIZATION"] = author ? ActionController::HttpAuthentication::Basic.encode_credentials(authors(author).login, 'monkey') : nil
+    @request.env["HTTP_AUTHORIZATION"] = author ? ActionController::HttpAuthentication::Basic.encode_credentials(author(author).login, 'monkey') : nil
   end
   
   # rspec

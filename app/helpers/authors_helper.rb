@@ -18,7 +18,7 @@ module AuthorsHelper
   end
 
   #
-  # Link to user's page ('authors/1')
+  # Link to user's page ('author/1')
   #
   # By default, their login is used as link text and link title (tooltip)
   #
@@ -31,17 +31,17 @@ module AuthorsHelper
   #
   # Examples:
   #   link_to_author @author
-  #   # => <a href="/authors/3" title="barmy">barmy</a>
+  #   # => <a href="/author/3" title="barmy">barmy</a>
   #
   #   # if you've added a .name attribute:
   #  content_tag :span, :class => :vcard do
   #    (link_to_author author, :class => 'fn n', :title_method => :login, :content_method => :name) +
   #          ': ' + (content_tag :span, author.email, :class => 'email')
   #   end
-  #   # => <span class="vcard"><a href="/authors/3" title="barmy" class="fn n">Cyril Fotheringay-Phipps</a>: <span class="email">barmy@blandings.com</span></span>
+  #   # => <span class="vcard"><a href="/author/3" title="barmy" class="fn n">Cyril Fotheringay-Phipps</a>: <span class="email">barmy@blandings.com</span></span>
   #
   #   link_to_author @author, :content_text => 'Your user page'
-  #   # => <a href="/authors/3" title="barmy" class="nickname">Your user page</a>
+  #   # => <a href="/author/3" title="barmy" class="nickname">Your user page</a>
   #
   def link_to_author(author, options={})
     raise "Invalid author" unless author

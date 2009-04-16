@@ -2,7 +2,7 @@
 <% @author.password = @author.password_confirmation = nil %>
 
 <%= error_messages_for :author %>
-<% form_for :author, :url => authors_path do |f| -%>
+<% form_for :author, :url => author_path do |f| -%>
 <p><%= label_tag 'login' %><br/>
 <%= f.text_field :login %></p>
 
