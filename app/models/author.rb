@@ -31,9 +31,13 @@ class Author < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessible :login, :email, :name, :password, :password_confirmation
   alias_attribute :crypted_password, :author_password
+  alias_attribute :login, :author_name
+  
 
-
-
+  def self.method_missing(method_id, *arguments, &block)
+    method_id = method_id.to_s.gsub(/_login/, "_name").to_sym
+    super    
+  end
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
   # uff.  this is really an authorization, not authentication routine.  

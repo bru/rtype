@@ -1,0 +1,31 @@
+
+quentin:
+  author_id:                        1
+  author_name:                     quentin
+  author_email:                     quentin@example.com
+#  author_salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
+  author_password:                  958e0614cd1ec6bfe027527c4fd78b69f726c055 # 'monkey'
+  author_created_on:                <%= 5.days.ago.to_s :db  %>
+  # author_remember_token_expires_at: <%= 1.days.from_now.to_s %>
+  # author_remember_token:            77de68daecd823babbb58edb1c8e14d7106e83bb
+      
+aaron:
+  author_id:                        2
+  author_name:                     aaron
+  author_email:                     aaron@example.com
+#  author_salt:                      da4b9237bacccdf19c0760cab7aec4a8359010b0 # SHA1('1')
+  author_password:                  d6e42879e603c7cb038249c2bd3ae6b0ad94f849 # 'monkey'
+  author_created_on:                <%= 1.days.ago.to_s :db %>
+  # author_remember_token_expires_at: 
+  # author_remember_token:            
+
+
+old_password_holder:
+  author_id:                        3
+  author_name:                     old_password_holder
+  author_email:                     salty_dog@example.com
+#  author_salt:                      7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  author_password:                  00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  author_created_on:                <%= 1.days.ago.to_s :db %>
+
+

@@ -6,7 +6,7 @@ development:
   #pool: 5
   #timeout: 5000
   username: root
-  password: 
+  password: 123456
   hostname: localhost
 
 # Warning: The database defined as "test" will be erased and
@@ -16,7 +16,7 @@ test:
   adapter: mysql
   database: rtype_test
   username: root
-  password: 
+  password: 123456
   hostname: localhost
 
 production:

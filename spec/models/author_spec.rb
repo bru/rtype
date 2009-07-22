@@ -6,7 +6,8 @@ require File.dirname(__FILE__) + '/../spec_helper'
 include AuthenticatedTestHelper
 
 describe Author do
-  fixtures :author
+  set_fixture_class :mt_author => Author
+  fixtures :mt_author, :mt_author_meta
 
   describe 'being created' do
     before do
@@ -28,8 +29,8 @@ describe Author do
 
   it 'requires login' do
     lambda do
-      u = create_author(:login => nil)
-      u.errors.on(:login).should_not be_nil
+      u = create_author(:author_name => nil)
+      u.errors.on(:author_name).should_not be_nil
     end.should_not change(Author, :count)
   end
 
@@ -38,8 +39,8 @@ describe Author do
      'hello.-_there@funnychar.com'].each do |login_str|
       it "'#{login_str}'" do
         lambda do
-          u = create_author(:login => login_str)
-          u.errors.on(:login).should     be_nil
+          u = create_author(:author_name => login_str)
+          u.errors.on(:author_name).should     be_nil
         end.should change(Author, :count).by(1)
       end
     end
@@ -50,8 +51,8 @@ describe Author do
      'semicolon;', 'quote"', 'tick\'', 'backtick`', 'percent%', 'plus+', 'space '].each do |login_str|
       it "'#{login_str}'" do
         lambda do
-          u = create_author(:login => login_str)
-          u.errors.on(:login).should_not be_nil
+          u = create_author(:author_name => login_str)
+          u.errors.on(:author_name).should_not be_nil
         end.should_not change(Author, :count)
       end
     end
@@ -59,8 +60,8 @@ describe Author do
 
   it 'requires password' do
     lambda do
-      u = create_author(:password => nil)
-      u.errors.on(:password).should_not be_nil
+      u = create_author(:author_password => nil)
+      u.errors.on(:author_password).should_not be_nil
     end.should_not change(Author, :count)
   end
 
@@ -73,8 +74,8 @@ describe Author do
 
   it 'requires email' do
     lambda do
-      u = create_author(:email => nil)
-      u.errors.on(:email).should_not be_nil
+      u = create_author(:author_email => nil)
+      u.errors.on(:author_email).should_not be_nil
     end.should_not change(Author, :count)
   end
 
@@ -86,8 +87,8 @@ describe Author do
     ].each do |email_str|
       it "'#{email_str}'" do
         lambda do
-          u = create_author(:email => email_str)
-          u.errors.on(:email).should     be_nil
+          u = create_author(:author_email => email_str)
+          u.errors.on(:author_email).should     be_nil
         end.should change(Author, :count).by(1)
       end
     end
@@ -101,8 +102,8 @@ describe Author do
     ].each do |email_str|
       it "'#{email_str}'" do
         lambda do
-          u = create_author(:email => email_str)
-          u.errors.on(:email).should_not be_nil
+          u = create_author(:author_email => email_str)
+          u.errors.on(:author_email).should_not be_nil
         end.should_not change(Author, :count)
       end
     end
@@ -114,8 +115,8 @@ describe Author do
     ].each do |name_str|
       it "'#{name_str}'" do
         lambda do
-          u = create_author(:name => name_str)
-          u.errors.on(:name).should     be_nil
+          u = create_author(:author_nickname => name_str)
+          u.errors.on(:author_nickname).should     be_nil
         end.should change(Author, :count).by(1)
       end
     end
@@ -126,16 +127,16 @@ describe Author do
      ].each do |name_str|
       it "'#{name_str}'" do
         lambda do
-          u = create_author(:name => name_str)
-          u.errors.on(:name).should_not be_nil
+          u = create_author(:author_nickname => name_str)
+          u.errors.on(:author_nickname).should_not be_nil
         end.should_not change(Author, :count)
       end
     end
   end
 
   it 'resets password' do
-    author(:quentin).update_attributes(:password => 'new password', :password_confirmation => 'new password')
-    Author.authenticate('quentin', 'new password').should == author(:quentin)
+    mt_author(:quentin).update_attributes(:password => 'new password', :password_confirmation => 'new password')
+    Author.authenticate('quentin', 'new password').should == mt_author(:quentin)
   end
 
   it 'does not rehash password' do
@@ -220,7 +221,7 @@ describe Author do
 
 protected
   def create_author(options = {})
-    record = Author.new({ :login => 'quire', :email => 'quire@example.com', :password => 'quire69', :password_confirmation => 'quire69' }.merge(options))
+    record = Author.new({ :author_name => 'quire', :author_email => 'quire@example.com', :author_password => 'quire69', :password_confirmation => 'quire69' }.merge(options))
     record.save
     record
   end
