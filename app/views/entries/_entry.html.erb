@@ -1,5 +1,5 @@
 <h3><%= link_to entry.title, entry.permalink %></h3>
-<div class="entry-meta">by <%= entry.author.nickname %> 
+<div class="entry-meta">by <%= entry.author.nickname if entry.author %> 
 	<abbr title="<%= entry.authored_on %>"><%= 	time_ago_in_words(entry.authored_on) %> ago</abbr> 
 	<% if entry.categories.size > 0 %>
 	in

@@ -42,15 +42,15 @@ module MovableType
       sql = super
       
       new_sql = []
-      #puts "FINDER: working on #{sql}"
+      puts "FINDER: working on #{sql}"
       for token in sql.split(' ')
          new_sql << token && next if %w(SELECT * FROM WHERE LIMIT GROUP BY UPDATE ORDER).include?(token)
          token_attr = nil
          token_class = self.to_s.downcase
          token_match = token.match(/^(\()?(`?[^@`\s\.]+`?\.)?`?([^\.\s<>='`]+)`?([\!<>=]+)?/)
          if token_match 
-          #puts "MATCH: #{token_match[3]} and class #{token_match[2]}"
-           token_class = token_match[2].match(/`?mt_([^\.\`]+)`?/)[1] if token_match[2]
+          puts "MATCH: #{token_match[3]} and class #{token_match[2]}"
+           token_class = token_match[2].match(/`?mt_([^\.\`]+)`?/)[1] if token_match[2] and token_match[2].match(/`?mt_([^\.\`]+)`?/)
            token_aliased_attr = custom_aliases[token_match[3]] ? custom_aliases[token_match[3]] : token_match[3]
            token_attr = token_class + "_" + token_aliased_attr if token_class && token_class.classify.constantize.column_names.include?(token_class + '_' + token_aliased_attr)
          end

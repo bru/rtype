@@ -16,22 +16,25 @@ ActionController::Routing::Routes.draw do |map|
   map.tag_search 'tag/:id', :controller => 'entries', :action => "tag_search"
     
   # Blog specific routes
-  Blog.each do |blog|  
-    map.blog blog.path, :controller => 'entries', :blog => blog.id                      
-    map.monthly_archive blog.path + '/:year/:month', 
-                      :controller => 'entries', :action => 'monthly_archive',
-                      :year       => /\d{4}/,
-                      :month      => /\d{1,2}/,
-                      :blog       => blog.id                  
-    map.category_archive blog.path + '/:category',
-                      :controller => 'entries', :action => 'category_archive', :blog => blog.id 
-    map.entry_archive blog.path + '/:year/:month/:basename',
-                      :controller => 'entries', :action => 'entry_archive',
-                      :year       => /\d{4}/,
-                      :month      => /\d{1,2}/,
-                      :blog       => blog.id 
-  end 
+  # Blog.each do |blog|  
+  #   map.blog blog.path, :controller => 'entries', :blog => blog.id                      
+  #   map.monthly_archive blog.path + '/:year/:month', 
+  #                     :controller => 'entries', :action => 'monthly_archive',
+  #                     :year       => /\d{4}/,
+  #                     :month      => /\d{1,2}/,
+  #                     :blog       => blog.id                  
+  #   map.category_archive blog.path + '/:category',
+  #                     :controller => 'entries', :action => 'category_archive', :blog => blog.id 
+  #   map.entry_archive blog.path + '/:year/:month/:basename',
+  #                     :controller => 'entries', :action => 'entry_archive',
+  #                     :year       => /\d{4}/,
+  #                     :month      => /\d{1,2}/,
+  #                     :blog       => blog.id 
+  # end 
+  # use a catch all rule instead
+  map.root :controller => 'entries', :action => 'home'
+
+  map.connect '*path', :controller => 'entries', :action => 'show'
                     
 
-  map.root :controller => 'entries', :action => 'home'
 end
