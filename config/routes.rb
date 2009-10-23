@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  
+  # Users and Session Management
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.register '/register', :controller => 'authors', :action => 'create'
@@ -8,32 +10,26 @@ ActionController::Routing::Routes.draw do |map|
              :action => 'activate', 
              :activation_code => nil
   map.resource :session
+  
+  # Author Pages
   map.resources :authors, :member => { :suspend => :put, :unsuspend => :put, :purge => :delete }
+  
+  # Commenting 
+  # FIXME: comments probably don't need full REST - this could be just a create...
   map.resources :comments
+  
+  # Tag search/archives
+  # FIXME: tags probably don't need full REST - this could be readonly (index, show)
   map.resources :tags
-
-  map.search '/search', :controller => 'entries', :action => "search"
   map.tag_search 'tag/:id', :controller => 'entries', :action => "tag_search"
+
+  # Search
+  map.search '/search', :controller => 'entries', :action => "search"
     
-  # Blog specific routes
-  # Blog.each do |blog|  
-  #   map.blog blog.path, :controller => 'entries', :blog => blog.id                      
-  #   map.monthly_archive blog.path + '/:year/:month', 
-  #                     :controller => 'entries', :action => 'monthly_archive',
-  #                     :year       => /\d{4}/,
-  #                     :month      => /\d{1,2}/,
-  #                     :blog       => blog.id                  
-  #   map.category_archive blog.path + '/:category',
-  #                     :controller => 'entries', :action => 'category_archive', :blog => blog.id 
-  #   map.entry_archive blog.path + '/:year/:month/:basename',
-  #                     :controller => 'entries', :action => 'entry_archive',
-  #                     :year       => /\d{4}/,
-  #                     :month      => /\d{1,2}/,
-  #                     :blog       => blog.id 
-  # end 
-  # use a catch all rule instead
+  # By default, show home...
   map.root :controller => 'entries', :action => 'home'
 
+  # Catch all route to resolve all the rest: pages, archives, entries, indexes
   map.connect '*path', :controller => 'entries', :action => 'show'
                     
 
