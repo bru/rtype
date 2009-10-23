@@ -21,16 +21,16 @@ ActionController::Routing::Routes.draw do |map|
   # Tag search/archives
   # FIXME: tags probably don't need full REST - this could be readonly (index, show)
   map.resources :tags
-  map.tag_search 'tag/:id', :controller => 'entries', :action => "tag_search"
+  map.tag_search 'tag/:id', :controller => 'archives', :action => "tag_search"
 
   # Search
-  map.search '/search', :controller => 'entries', :action => "search"
+  map.search '/search', :controller => 'archives', :action => "search"
     
   # By default, show home...
-  map.root :controller => 'entries', :action => 'home'
+  map.root :controller => 'archives', :action => 'home'
 
   # Catch all route to resolve all the rest: pages, archives, entries, indexes
-  map.connect '*path', :controller => 'entries', :action => 'show'
+  map.connect '*path', :controller => 'archives', :action => 'show'
                     
 
 end

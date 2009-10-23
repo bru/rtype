@@ -1,4 +1,4 @@
-class EntriesController < ApplicationController
+class ArchivesController < ApplicationController
   
   before_filter :find_blog, :except => [ :home, :search, :tag_search ]
   before_filter :find_archive, :only => [ :show ] 
