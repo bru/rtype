@@ -5,7 +5,5 @@ class ApplicationController < ActionController::Base
   helper :all
   protect_from_forgery 
   include AuthenticatedSystem
-
-  # Scrub sensitive parameters from your log
   filter_parameter_logging :password, :password_confirmation
 end
