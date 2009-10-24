@@ -1,6 +1,5 @@
 class ArchivesController < ApplicationController
   
-  before_filter :find_blog, :except => [ :home, :search, :tag_search ]
   before_filter :find_archive, :only => [ :show ] 
   before_filter :store_location
   
@@ -11,17 +10,22 @@ class ArchivesController < ApplicationController
 
   
   def show
-    if @is_index
+    case @fileinfo.archive_type
+    when "index"
       index
       render :action => "index"
-    elsif @is_entry
+    when "Individual"
       entry_archive
       render :action => "entry_archive"
-    elsif @is_monthly
+    when "Monthly"
       monthly_archive
       render :action => "monthly_archive"
-    else
+    when "Category"
       category_archive
+      render :action => "category_archive"
+    when "Page"
+      entry_archive
+      @page = @entry
       render :action => "category_archive"
     end
   end
@@ -49,49 +53,27 @@ protected
     @entries = Entry.published.paginate(:page => params[:page], :include => [ :author, :blog, :comments, :tags, :categories ], :conditions => { :entry_blog_id => @blog.id }, :order => "entry_authored_on DESC", :per_page => 10)
   end
   
-  def category_archive
-    path = params[:path]
-    
-    @category = Category.find(:first, :conditions => { :category_basename => path[1] })
+  def category_archive  
+    @category = Category.find(@fileinfo.category_id)
     @entries = @category.entries.published[0..24]
   end
   
   def entry_archive
-    path = params[:path]
-    @entry = Entry.published.find(:first, :conditions => ["entry_blog_id = ? and entry_basename = ? and year(entry_authored_on) = ? and month(entry_authored_on) = ?", @blog.id, path[3], path[1], path[2] ] )
+    @entry = Entry.published.find(@fileinfo.entry_id)
   end
-
   
   def monthly_archive
     path = params[:path]
+    @month = @fileifo.startdate
     @entries = Entry.published.find(:all, 
           :conditions => ["entry_blog_id = ? and year(entry_authored_on) = ? and month(entry_authored_on) = ?", 
                           @blog.id, path[1], path[2] ], 
           :order => 'entry_authored_on DESC', :limit => 25 )
   end
-
-  def find_blog
-    if params[:path]
-      @blog = Blog.find_by_basename(params[:path].first)
-    else
-      # something bad happened
-      logger.error("Can't find blog #{params[:blog]}")
-    end
-  end
   
   def find_archive
-    path = params[:path]
-    
-    if (path.size == 1)
-      @is_index = true 
-    elsif (path[1] and path[1].match(/\d\d\d\d/) and path[2] and path[2].match(/\d\d?/) ) 
-      if (path[3]) 
-        @is_entry = true
-      else
-        @is_monthly = true
-      end
-    else
-      @is_category = true
-    end
+    url = request.path.sub!(/^(/?)/,"/")
+    @fileinfo = Fileinfo.find_by_url(path)
+    @blog = Blog.find(@fileinfo.blog_id)
   end
 end
