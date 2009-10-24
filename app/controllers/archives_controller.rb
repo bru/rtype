@@ -10,24 +10,9 @@ class ArchivesController < ApplicationController
 
   
   def show
-    case @fileinfo.archive_type
-    when "index"
-      index
-      render :action => "index"
-    when "Individual"
-      entry_archive
-      render :action => "entry_archive"
-    when "Monthly"
-      monthly_archive
-      render :action => "monthly_archive"
-    when "Category"
-      category_archive
-      render :action => "category_archive"
-    when "Page"
-      entry_archive
-      @page = @entry
-      render :action => "category_archive"
-    end
+    @template = @fileinfo.template
+    process_template(@template)
+    @performed_render ||= true
   end
   
   def search
@@ -49,31 +34,35 @@ class ArchivesController < ApplicationController
 
 protected
 
-  def index
-    @entries = Entry.published.paginate(:page => params[:page], :include => [ :author, :blog, :comments, :tags, :categories ], :conditions => { :entry_blog_id => @blog.id }, :order => "entry_authored_on DESC", :per_page => 10)
-  end
-  
-  def category_archive  
-    @category = Category.find(@fileinfo.category_id)
-    @entries = @category.entries.published[0..24]
-  end
-  
-  def entry_archive
-    @entry = Entry.published.find(@fileinfo.entry_id)
-  end
-  
-  def monthly_archive
-    path = params[:path]
-    @month = @fileifo.startdate
-    @entries = Entry.published.find(:all, 
-          :conditions => ["entry_blog_id = ? and year(entry_authored_on) = ? and month(entry_authored_on) = ?", 
-                          @blog.id, path[1], path[2] ], 
-          :order => 'entry_authored_on DESC', :limit => 25 )
-  end
+  # def index
+  #   @entries = Entry.published.paginate(:page => params[:page], :include => [ :author, :blog, :comments, :tags, :categories ], :conditions => { :entry_blog_id => @blog.id }, :order => "entry_authored_on DESC", :per_page => 10)
+  # end
+  # 
+  # def category_archive  
+  #   @category = Category.find(@fileinfo.category_id)
+  #   @entries = @category.entries.published[0..24]
+  # end
+  # 
+  # def entry_archive
+  #   @entry = Entry.published.find(@fileinfo.entry_id)
+  # end
+  # 
+  # def monthly_archive
+  #   path = params[:path]
+  #   @month = @fileifo.startdate
+  #   @entries = Entry.published.find(:all, 
+  #         :conditions => ["entry_blog_id = ? and year(entry_authored_on) = ? and month(entry_authored_on) = ?", 
+  #                         @blog.id, path[1], path[2] ], 
+  #         :order => 'entry_authored_on DESC', :limit => 25 )
+  # end
   
   def find_archive
-    url = request.path.sub!(/^(/?)/,"/")
-    @fileinfo = Fileinfo.find_by_url(path)
+    url = request.path.sub!(/^(\/?)/,"/")
+    @fileinfo = Fileinfo.find_by_url(url)
     @blog = Blog.find(@fileinfo.blog_id)
+  end
+  
+  def process_template(template)
+    template.process(request, response)
   end
 end
