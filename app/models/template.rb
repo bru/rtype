@@ -1,7 +1,7 @@
 class Template < ActiveRecord::Base
   include MovableType
   include MovableType::Taggable
-  include TemplateTags
+  include MovableType::TemplateTags
   belongs_to :blog, :foreign_key => "template_blog_id"
   
   

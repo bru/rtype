@@ -26,7 +26,7 @@ class Context < Radius::Context
   def tag_missing(name, attributes = {}, &block)
     super
   rescue Radius::UndefinedTagError => e
-    raise TemplateTags::TagError.new(e.message)
+    raise MovableType::TemplateTags::TagError.new(e.message)
   end
   
   private

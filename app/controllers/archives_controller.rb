@@ -59,7 +59,11 @@ protected
   def find_archive
     url = request.path.sub!(/^(\/?)/,"/")
     @fileinfo = Fileinfo.find_by_url(url)
-    @blog = Blog.find(@fileinfo.blog_id)
+    if @fileinfo
+      @blog = Blog.find(@fileinfo.blog_id)
+    else
+      render :text => "uh oh", :status => 404
+    end
   end
   
   def process_template(template)
