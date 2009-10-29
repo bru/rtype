@@ -7,7 +7,7 @@ class Blog < ActiveRecord::Base
   has_many :comments
   
   def self.tag_methods
-    %w(ArchiveUrl id name description language SitePath url )
+    %w(ArchiveUrl ID Name Description Language SitePath Url RelativeUrl EntryCount CategoryCount CommentCount Host PageCount)
   end
  
   # Tag Methods 
@@ -19,6 +19,11 @@ class Blog < ActiveRecord::Base
     blog_site_url.sub(/^(http:\/\/){0,1}[^\/]*\//, "")
   end
   alias_method :site_path, :path
+  alias_method :relative_url, :path
+  
+  def host
+    blog_site_url.match(/^(http:\/\/){0,1}([^\/]*)\//)[1]
+  end
   
   def entry_count
     entries.count
@@ -28,6 +33,9 @@ class Blog < ActiveRecord::Base
   end
   def comment_count
     comments.count
+  end
+  def page_count
+    pages.count
   end
   #alias_method :ping_count, :pings_count
   
