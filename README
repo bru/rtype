@@ -16,7 +16,7 @@ h3. Features
 
 h3. Usage
 
-Keep on using MT's interface for the backend. Let rtype do the rest.
+Keep on using MT's interface for the all backend activities (writing posts, moderating comments, even editing templates). Let rtype do the rest.
 To configure rType, edit config/database.yml to point to the MT database you want to render.
 
 rType will use ERB for templates that are configured to be built "dynamically", and will try to compile MTML for the other templates.
