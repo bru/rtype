@@ -5,4 +5,5 @@ class Fileinfo < ActiveRecord::Base
   belongs_to :blog, :foreign_key => "fileinfo_blog_id"
   belongs_to :category, :foreign_key => "fileinfo_category_id"
   belongs_to :author, :foreign_key => "fileinfo_author_id"
+  belongs_to :entry, :foreign_key => "fileinfo_entry_id"
 end

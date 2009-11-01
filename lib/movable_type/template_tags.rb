@@ -8,7 +8,7 @@ module MovableType::TemplateTags
   class TagError < StandardError; end
   
   # Generic attribute accessor tags
-  %w( Asset Author Blog Comment Entry Tag Trackback).each do |entity|  
+  %w( Asset Author Blog Comment Entry Tag Trackback).each do |entity| 
     entity.constantize.tag_methods.each do |attribute|
       tag_attribute = attribute.downcase
       MovableType::TemplateTags::tag entity.downcase + tag_attribute do |tag|

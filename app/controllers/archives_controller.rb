@@ -1,6 +1,6 @@
 class ArchivesController < ApplicationController
   
-  before_filter :find_archive, :only => [ :show ] 
+  before_filter :find_fileinfo, :only => [ :show ] 
   before_filter :store_location
   
   def home
@@ -10,9 +10,30 @@ class ArchivesController < ApplicationController
 
   
   def show
-    @template = @fileinfo.template
-    process_template(@template)
-    @performed_render ||= true
+    @t = @fileinfo.template
+    if @t.build_type == 6
+      # TODO: complete edge cases for monthly and category archives
+      @blog = Blog.find(@fileinfo.blog_id)
+      case @fileinfo.archive_type.downcase
+      when 'index'
+        # do nothing
+      when 'individual'
+        @entry = @fileinfo.entry
+      when 'page'
+        @page = @fileinfo.entry
+      when 'monthly'
+        @entries = @blog.entries.find(:all, :conditions => ["entry_published_on > ?", @fileinfo.startdate])
+      when 'category'
+        # doesn't count secondary categories
+        @entries = @blog.entries.find(:all, :conditions => ["entry_category_id = ?", @fileinfo.category_id])
+      when 'category-monthly'
+        # do something
+      end
+      render :inline => @t.text
+    else
+      process_template(@t)
+      @performed_render ||= true
+    end
   end
   
   def search
@@ -34,39 +55,14 @@ class ArchivesController < ApplicationController
 
 protected
 
-  # def index
-  #   @entries = Entry.published.paginate(:page => params[:page], :include => [ :author, :blog, :comments, :tags, :categories ], :conditions => { :entry_blog_id => @blog.id }, :order => "entry_authored_on DESC", :per_page => 10)
-  # end
-  # 
-  # def category_archive  
-  #   @category = Category.find(@fileinfo.category_id)
-  #   @entries = @category.entries.published[0..24]
-  # end
-  # 
-  # def entry_archive
-  #   @entry = Entry.published.find(@fileinfo.entry_id)
-  # end
-  # 
-  # def monthly_archive
-  #   path = params[:path]
-  #   @month = @fileifo.startdate
-  #   @entries = Entry.published.find(:all, 
-  #         :conditions => ["entry_blog_id = ? and year(entry_authored_on) = ? and month(entry_authored_on) = ?", 
-  #                         @blog.id, path[1], path[2] ], 
-  #         :order => 'entry_authored_on DESC', :limit => 25 )
-  # end
   
-  def find_archive
+  def find_fileinfo
     url = request.path.sub!(/^(\/?)/,"/")
     @fileinfo = Fileinfo.find_by_url(url)
-    if @fileinfo
-      @blog = Blog.find(@fileinfo.blog_id)
-    else
-      render :text => "uh oh", :status => 404
-    end
+    render :text => "uh oh - template for " + url + " not found", :status => 404 unless @fileinfo
   end
   
   def process_template(template)
-    template.process(request, response)
+      template.process(request, response)
   end
 end

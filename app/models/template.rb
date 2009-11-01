@@ -8,10 +8,6 @@ class Template < ActiveRecord::Base
   attr_accessor :request, :response
   def process(request, response)
     @request, @response = request, response
-    # if layout
-    #   content_type = layout.content_type.to_s.strip
-    #   @response.headers['Content-Type'] = content_type unless content_type.empty?
-    # end
     headers.each { |k,v| @response.headers[k] = v }
     @response.body = render
     @response.status = response_code

@@ -2,6 +2,7 @@ Template Tags
 
 * Add filters 
 * Add textile / markdown processors (can be seen as filter)
+* Possibly redefine tags as aliases to Radius syntax (e.g. mt:blogname alias of mt:blog:name)
 * Add erb template type
 
 Routing
