@@ -1,0 +1,9 @@
+Template Tags
+
+* Add filters 
+* Add textile / markdown processors (can be seen as filter)
+* Add erb template type
+
+Routing
+
+* Add auto-search for "index" when accessing a folder 
