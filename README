@@ -5,6 +5,10 @@ It sits on top of MT database, maps it to ActiveRecord and uses implements Rails
 
 _Please note that this is alpha software, don't use it in production. Yet_
 
+h3. History 
+
+This was created in order to solve some user experience issues I had with Movable Type (specifically search, comments and non-admin user authentication), but then evolved in a way to experiment with ActiveRecord mapping, dynamic routing and alternate template systems for Rails. This code has never been used in production, but I think there are some potentially useful bits here and there.
+
 h3. Features
 
 * Automatic routing
