@@ -19,6 +19,11 @@ module MovableType
   end
   
   module ModelClassMethods 
+    def tag_methods
+      # generic attributes, if any
+      []
+    end
+    
     def column_methods_hash #:nodoc:
       @dynamic_methods_hash ||= column_names.inject(Hash.new(false)) do |methods, attr|
 

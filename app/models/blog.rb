@@ -7,7 +7,7 @@ class Blog < ActiveRecord::Base
   has_many :comments
   
   def self.tag_methods
-    %w(ArchiveUrl ID Name Description Language SitePath Url RelativeUrl EntryCount CategoryCount CommentCount Host PageCount)
+    %w(ArchiveUrl ID Name Description Language SitePath Url RelativeUrl EntryCount CategoryCount CommentCount Host PageCount ThemeID)
   end
  
   # Tag Methods 

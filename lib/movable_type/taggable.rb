@@ -26,6 +26,9 @@ module MovableType::Taggable
       Util.tags_in_array(self.instance_methods)
     end
     
+    def apply_filters
+      #po?
+    end
   end
   
   module Util
