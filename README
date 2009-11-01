@@ -1,19 +1,29 @@
-h2. Welcome to RType
+h2. Welcome to rType
 
 Rtype is a Ruby on Rails application that acts as a smart front end for Movable Type blogs.
 It sits on top of MT database, maps it to ActiveRecord and uses implements Rails conventions to bless MT with a proper MVC stack and improved performance.
 
-h3. Usage
-
-Keep on using MT's interface for the backend. Let Rtype do the rest.
+_Please note that this is alpha software, don't use it in production. Yet_
 
 h3. Features
 
 * Automatic routing
 * UltraSphinx powered search
 * Fast, low "cost" comments
-* Lightweight session management
+* Lightweight session management (using a modified restful authentication)
 * ERB templates
+* ActiveRecord mapping
+
+h3. Usage
+
+Keep on using MT's interface for the backend. Let rtype do the rest.
+To configure rType, edit config/database.yml to point to the MT database you want to render.
+
+rType will use ERB for templates that are configured to be built "dynamically", and will try to compile MTML for the other templates.
+MTML support is *just a proof of concept* at the moment, with just the basic attribute accessors working, but feel free to add more functionalities and send me a pull request, I will be happy to add that to the main repo.
+
+ERB templates will have access to some global objects, depending on the archive type being rendered: @blog (for all templates), @category (for category templates), @entry (for individual archive templates), and so on. These are defined in the ArchivesController.
+
 
 h3. TODO
 
