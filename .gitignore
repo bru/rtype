@@ -1,4 +1,5 @@
 config/database.yml
+config/ultrasphinx/*
 tmp/**/*
 tmp
 *.swp
