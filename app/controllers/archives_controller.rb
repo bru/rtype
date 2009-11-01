@@ -11,24 +11,8 @@ class ArchivesController < ApplicationController
   
   def show
     @t = @fileinfo.template
-    if @t.build_type == 6
-      # TODO: complete edge cases for monthly and category archives
-      @blog = Blog.find(@fileinfo.blog_id)
-      case @fileinfo.archive_type.downcase
-      when 'index'
-        # do nothing
-      when 'individual'
-        @entry = @fileinfo.entry
-      when 'page'
-        @page = @fileinfo.entry
-      when 'monthly'
-        @entries = @blog.entries.find(:all, :conditions => ["entry_published_on > ?", @fileinfo.startdate])
-      when 'category'
-        # doesn't count secondary categories
-        @entries = @blog.entries.find(:all, :conditions => ["entry_category_id = ?", @fileinfo.category_id])
-      when 'category-monthly'
-        # do something
-      end
+    if @t.build_type == 3 # if it is to be "Dynamically" built, use ERB
+      load_globals
       render :inline => @t.text
     else
       process_template(@t)
@@ -64,5 +48,25 @@ protected
   
   def process_template(template)
       template.process(request, response)
+  end
+  
+  def load_globals
+    # TODO: complete edge cases for monthly and category archives
+     @blog = Blog.find(@fileinfo.blog_id)
+     case @fileinfo.archive_type.downcase
+     when 'index'
+       # do nothing
+     when 'individual'
+       @entry = @fileinfo.entry
+     when 'page'
+       @page = @fileinfo.entry
+     when 'monthly'
+       @entries = @blog.entries.find(:all, :conditions => ["entry_published_on > ?", @fileinfo.startdate])
+     when 'category'
+       # doesn't count secondary categories
+       @entries = @blog.entries.find(:all, :conditions => ["entry_category_id = ?", @fileinfo.category_id])
+     when 'category-monthly'
+       # do something
+     end
   end
 end
